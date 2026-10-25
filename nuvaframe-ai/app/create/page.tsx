@@ -28,7 +28,7 @@ export default function CreatePage() {
     <main className="create-page">
       <header className="create-header"><Brand /><Link href="/" className="back-link"><ArrowLeft size={16} /> Back to home</Link></header>
       <div className="create-shell">
-        <div className="create-intro"><div className="eyebrow"><span className="eyebrow-dot" /> YOUR CREATIVE STUDIO</div><h1>Let's make something<br /><span>worth watching.</span></h1><p>Start with the idea. Set the direction. We'll build the workflow around your vision.</p></div>
+                <div className="create-intro"><div className="eyebrow"><span className="eyebrow-dot" /> YOUR CREATIVE STUDIO</div><h1>Let&apos;s make something<br /><span>worth watching.</span></h1><p>Start with the idea. Set the direction. We&apos;ll build the workflow around your vision.</p></div>
         <div className="studio-grid">
           <form className="studio-form" onSubmit={handleSubmit}>
             <div className="form-section"><div className="form-section-title"><span className="form-icon"><WandSparkles size={17} /></span><div><h2>Describe your video</h2><p>Be specific about the story, mood or message.</p></div><span className="required-tag">REQUIRED</span></div>
