@@ -52,7 +52,6 @@ export default function CreatePage() {
             <div className="aside-checklist"><h3>YOUR CREATIVE BRIEF</h3><div><Check size={15} /><span>Prompt-led concept</span></div><div><Check size={15} /><span>Style: {style}</span></div><div><Check size={15} /><span>Duration: {length}</span></div><div><Check size={15} /><span>Voice: {voice}</span></div></div>
           </aside>
         </div>
-      </div>
     </main>
   );
 }
