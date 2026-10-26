@@ -49,7 +49,7 @@ export default function CreatePage() {
           </form>
           <aside className="studio-aside">
             <div className="aside-preview"><div className="aside-preview-head"><span>CONCEPT PREVIEW</span><span className="live-dot" /> DRAFT</div><div className="aside-art"><div className="art-ring ring-one" /><div className="art-ring ring-two" /><div className="art-core"><PlayGlyph /></div><div className="art-title">YOUR IDEA<br /><em>IN MOTION.</em></div><div className="art-index">NF / 001</div></div><div className="aside-preview-foot"><span><span className="tiny-dot" /> Concept only</span><span>9:16 FORMAT</span></div></div>
-            <div className="aside-note"><span className="aside-note-icon"><Sparkles size={17} /></span><div><strong>Made for short-form storytelling</strong><p>We’ll connect the real generation engine after the core app and provider are configured. This preview does not pretend to be a generated video.</p></div></div>
+            <div className="aside-note"><span className="aside-note-icon"><Sparkles size={17} /></span><div><strong>Made for short-form storytelling</strong><p>We&apos;ll connect the real generation engine after the core app and provider are configured. This preview does not pretend to be a generated video.</p>
             <div className="aside-checklist"><h3>YOUR CREATIVE BRIEF</h3><div><Check size={15} /><span>Prompt-led concept</span></div><div><Check size={15} /><span>Style: {style}</span></div><div><Check size={15} /><span>Duration: {length}</span></div><div><Check size={15} /><span>Voice: {voice}</span></div></div>
           </aside>
         </div>
