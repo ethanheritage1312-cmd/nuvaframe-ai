@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import Image from "next/image";
 
@@ -16,13 +15,15 @@ export function Brand({ compact = false }: { compact?: boolean }) {
 height={60}
 priority
 style={{
-  width: compact ? "120px" : "155px",
+  width: compact ? "170px" : "210px",
   height: "auto",
-  maxHeight: "44px",
+  maxWidth: "100%",
   objectFit: "contain",
   objectPosition: "center",
   display: "block",
+  flexShrink: 0,
 }}
+
       />
     </Link>
   );
