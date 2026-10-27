@@ -13,13 +13,16 @@ export function Brand({ compact = false }: { compact?: boolean }) {
         src="/file_0000000023188211a80298b246f56f31.png"
         alt="Nuvaframe AI"
         width={180}
-        height={60}
-        priority
-        style={{
-          width: compact ? "140px" : "180px",
-          height: "auto",
-          objectFit: "contain",
-        }}
+height={60}
+priority
+style={{
+  width: compact ? "120px" : "155px",
+  height: "auto",
+  maxHeight: "44px",
+  objectFit: "contain",
+  objectPosition: "center",
+  display: "block",
+}}
       />
     </Link>
   );
