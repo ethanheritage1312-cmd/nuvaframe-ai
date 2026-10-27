@@ -22,7 +22,7 @@ style={{
   objectPosition: "center",
   display: "block",
   flexShrink: 0,
-  transform: "translateY(15px)",
+  transform: "translateY(20px)",
 }}
 
       />
