@@ -15,7 +15,7 @@ export function Brand({ compact = false }: { compact?: boolean }) {
 height={60}
 priority
 style={{
-  width: compact ? "170px" : "210px",
+  width: compact ? "135px" : "167px",
   height: "auto",
   maxWidth: "100%",
   objectFit: "contain",
