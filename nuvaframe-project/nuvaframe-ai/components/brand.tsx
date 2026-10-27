@@ -22,6 +22,7 @@ style={{
   objectPosition: "center",
   display: "block",
   flexShrink: 0,
+  transform: "translateY(5px)",
 }}
 
       />
