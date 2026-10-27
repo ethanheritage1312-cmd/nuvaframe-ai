@@ -3,13 +3,15 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
+const API_BASE = "https://api.magichour.ai/v1";
+
 export async function POST(request: Request) {
   try {
     const apiKey = process.env.MAGIC_HOUR_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json(
-        { error: "Video generation is not configured on the server." },
+        { error: "Video generation is not configured." },
         { status: 503 }
       );
     }
@@ -17,9 +19,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const prompt =
       typeof body.prompt === "string" ? body.prompt.trim() : "";
-
-    const allowedDurations = [15, 30, 60];
-    const duration = Number(body.duration ?? 30);
+    const duration = Number(body.duration ?? 15);
 
     if (prompt.length < 12 || prompt.length > 1200) {
       return NextResponse.json(
@@ -28,82 +28,97 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!allowedDurations.includes(duration)) {
+    if (![15, 30].includes(duration)) {
       return NextResponse.json(
-        { error: "Choose a 15, 30, or 60 second video." },
+        { error: "Only 15- and 30-second Free requests are enabled." },
         { status: 400 }
       );
     }
 
-    if (duration === 60) {
-      return NextResponse.json(
-        { error: "60-second videos require Premium access, which is not yet enabled." },
-        { status: 403 }
-      );
-    }
-
-    const result = await fetch(
-      "https://api.magichour.ai/v1/text-to-video",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          end_seconds: duration,
-          aspect_ratio: "9:16",
-          style: {
-            prompt,
-          },
-          name: "Nuvaframe AI Video",
-          model: "ltx-2.5",
-          resolution: "480p",
-          audio: true,
-        }),
-        signal: AbortSignal.timeout(25000),
-      }
-    );
-
-    const responseText = await result.text();
-
-    let data: unknown;
-    try {
-      data = JSON.parse(responseText);
-    } catch {
-      data = { message: "The video provider returned an unexpected response." };
-    }
-
-    if (!result.ok) {
-      console.error("Magic Hour request failed:", result.status);
-
-      return NextResponse.json(
-        {
-          error:
-            result.status === 402
-              ? "The provider requires additional credits or access."
-              : result.status === 401
-                ? "The provider rejected the API key. Check the Vercel environment variable."
-                : "Magic Hour could not accept the video request.",
-          providerStatus: result.status,
-        },
-        { status: result.status === 401 ? 502 : 502 }
-      );
-    }
-
-    return NextResponse.json({
-      ok: true,
-      message: "Video request submitted to Magic Hour.",
-      result: data,
+    const response = await fetch(`${API_BASE}/text-to-video`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "Nuvaframe AI Video",
+        end_seconds: duration,
+        aspect_ratio: "9:16",
+        style: { prompt },
+        model: "ltx-2.5",
+        resolution: "480p",
+        audio: true,
+      }),
+      signal: AbortSignal.timeout(25000),
     });
+
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      console.error("Magic Hour create request failed:", response.status);
+      return NextResponse.json(
+        { error: "Magic Hour could not accept the request." },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json({ ok: true, result: data });
   } catch (error) {
     console.error(
-      "Video request error:",
+      "Video API error:",
       error instanceof Error ? error.message : "Unknown error"
     );
 
     return NextResponse.json(
-      { error: "Could not contact the video provider. Please try again." },
+      { error: "Could not contact the video provider." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const apiKey = process.env.MAGIC_HOUR_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "Video generation is not configured." },
+        { status: 503 }
+      );
+    }
+
+    const id = new URL(request.url).searchParams.get("id");
+
+    if (!id || !/^[a-zA-Z0-9_-]+$/.test(id)) {
+      return NextResponse.json(
+        { error: "A valid video project ID is required." },
+        { status: 400 }
+      );
+    }
+
+    const response = await fetch(
+      `${API_BASE}/video-projects/${encodeURIComponent(id)}`,
+      {
+        headers: { Authorization: `Bearer ${apiKey}` },
+        cache: "no-store",
+        signal: AbortSignal.timeout(15000),
+      }
+    );
+
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: "Could not retrieve the video status." },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json({ ok: true, result: data });
+  } catch {
+    return NextResponse.json(
+      { error: "Could not check the video status." },
       { status: 500 }
     );
   }
