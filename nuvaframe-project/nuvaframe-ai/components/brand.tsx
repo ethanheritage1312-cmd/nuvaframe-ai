@@ -1,15 +1,26 @@
+
 import Link from "next/link";
-import { Scan, Play, Sparkles } from "lucide-react";
+import Image from "next/image";
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" className={`brand ${compact ? "brand-compact" : ""}`} aria-label="Nuvaframe AI home">
-      <span className="brand-mark" aria-hidden="true">
-        <Scan className="brand-scan" size={37} strokeWidth={1.8} />
-        <Play className="brand-play" size={17} fill="currentColor" strokeWidth={1.5} />
-        <Sparkles className="brand-spark" size={12} fill="currentColor" />
-      </span>
-      <span className="brand-word">NUVA<span>FRAME</span></span>
+    <Link
+      href="/"
+      className={`brand ${compact ? "brand-compact" : ""}`}
+      aria-label="Nuvaframe AI home"
+    >
+      <Image
+        src="/file_0000000023188211a80298b246f56f31.png"
+        alt="Nuvaframe AI"
+        width={180}
+        height={60}
+        priority
+        style={{
+          width: compact ? "140px" : "180px",
+          height: "auto",
+          objectFit: "contain",
+        }}
+      />
     </Link>
   );
 }
